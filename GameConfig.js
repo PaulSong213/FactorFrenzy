@@ -31,3 +31,22 @@ export const gameDetails = {
     playButtonColor: "#6200B3",
   },
 };
+
+export const operations = {
+  addition: {
+    symbol: "+",
+    name: "addition",
+  },
+  subtraction: {
+    symbol: "-",
+    name: "subtraction",
+  },
+  multiplication: {
+    symbol: "x",
+    name: "multiplication",
+  },
+  division: {
+    symbol: "÷",
+    name: "division",
+  },
+};

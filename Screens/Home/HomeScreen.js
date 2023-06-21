@@ -1,7 +1,7 @@
 import { Button, VStack, Text, Surface } from "@react-native-material/core";
 import { SafeAreaView, ScrollView, View, TouchableOpacity } from "react-native";
 import PlayButton from "./components/PlayButton";
-import { gameTypes } from "../../GameConfig";
+import { gameTypes, operations } from "../../GameConfig";
 export default HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
@@ -13,6 +13,7 @@ export default HomeScreen = ({ navigation }) => {
               onPlayClick={() => {
                 navigation.navigate("Game", {
                   gameType: gameTypes.addingFraction,
+                  operation: operations.addition.name,
                 });
               }}
               gameType={gameTypes.addingFraction}

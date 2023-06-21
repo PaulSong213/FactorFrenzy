@@ -13,12 +13,6 @@ import { Dimensions } from "react-native";
 import Formula from "./components/Formula";
 
 export default GameScreen = ({ navigation, route }) => {
-  /*
-    Tutorial reference
-    Adding : https://www.youtube.com/watch?v=CoCmsyFQ_Xc
-
-  */
-
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
   const [level, setLevel] = useState(2);
@@ -53,7 +47,7 @@ export default GameScreen = ({ navigation, route }) => {
             color={"#fff"}
             progress={level / 10}
           />
-          <Formula />
+          <Formula operation={route.params.operation} />
         </VStack>
       </ScrollView>
     </SafeAreaView>
