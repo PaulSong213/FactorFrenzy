@@ -1,7 +1,7 @@
 import { Button, VStack, Text, Surface } from "@react-native-material/core";
 import { SafeAreaView, ScrollView, View, TouchableOpacity } from "react-native";
 import PlayButton from "./components/PlayButton";
-import { gameTypes, operations } from "../../GameConfig";
+import { gameTypes, operations } from "../../config/GameConfig";
 export default HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>

@@ -2,7 +2,7 @@ import { Button, VStack, Text, Surface } from "@react-native-material/core";
 import { SafeAreaView, ScrollView, View, TouchableOpacity } from "react-native";
 import ProgressBar from "react-native-progress/Bar";
 import { Ionicons } from "@expo/vector-icons";
-import { gameDetails, gameTypes } from "../../../GameConfig";
+import { gameDetails, gameTypes } from "../../../config/GameConfig";
 
 export default PlayButton = ({ gameType, onPlayClick }) => {
   return (

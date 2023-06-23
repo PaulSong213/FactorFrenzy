@@ -50,3 +50,12 @@ export const operations = {
     name: "division",
   },
 };
+
+export function isWithCommonDenominator(operation) {
+  if (
+    operation === operations.addition.name ||
+    operation === operations.subtraction.name
+  )
+    return true;
+  return false;
+}

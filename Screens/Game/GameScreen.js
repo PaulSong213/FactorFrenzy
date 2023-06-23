@@ -7,16 +7,60 @@ import {
 } from "@react-native-material/core";
 import { SafeAreaView, ScrollView, View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ProgressBar from "react-native-progress/Bar";
 import { Dimensions } from "react-native";
 import Formula from "./components/Formula";
+import NextLevelDialog from "./components/NextLevelDialog";
+import AnswerConfig from "../../config/AnswerConfig";
 
 export default GameScreen = ({ navigation, route }) => {
+  const operation = route.params.operation;
   const [score, setScore] = useState(0);
-  const [lives, setLives] = useState(3);
-  const [level, setLevel] = useState(2);
+  const [lives, setLives] = useState(5);
+  const [level, setLevel] = useState(1);
+  const [currentProblem, setCurrentProblem] = useState(
+    AnswerConfig[operation][`level${level}`]
+  );
+  const [remainingQuestion, setRemainingQuestion] = useState(
+    countIsAnsweredFalse(currentProblem)
+  );
+  const firstUpdate = useRef(true);
+  const [isLevelDialogVisible, setIsLevelDialogVisible] = useState(false);
   const windowWidth = Dimensions.get("window").width;
+  function countIsAnsweredFalse(obj) {
+    let count = 0;
+
+    function countIsAnsweredFalseRecursive(item) {
+      if (typeof item === "object" && item !== null) {
+        if (item.hasOwnProperty("isAnswered") && item.isAnswered === false) {
+          count++;
+        } else {
+          Object.values(item).forEach((value) => {
+            countIsAnsweredFalseRecursive(value);
+          });
+        }
+      }
+    }
+
+    Object.values(obj).forEach((arr) => {
+      arr.forEach((item) => {
+        countIsAnsweredFalseRecursive(item);
+      });
+    });
+
+    return count;
+  }
+
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    setScore(score + 20);
+    if (remainingQuestion === 0) setIsLevelDialogVisible(true);
+  }, [remainingQuestion]);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -37,19 +81,31 @@ export default GameScreen = ({ navigation, route }) => {
             </HStack>
             <HStack>
               {[...Array(lives)].map((x, i) => (
-                <Ionicons style={styles.lives} size={23} name="heart" />
+                <Ionicons key={i} style={styles.lives} size={23} name="heart" />
               ))}
             </HStack>
           </View>
           <ProgressBar
             style={styles.levelProgress}
             width={windowWidth - 40}
-            color={"#fff"}
+            color={"#c472f5"}
             progress={level / 10}
           />
-          <Formula operation={route.params.operation} />
+          <Text style={styles.level}>LEVEL {level}</Text>
+          <Formula
+            currentProblem={currentProblem}
+            operation={route.params.operation}
+            remainingQuestion={remainingQuestion}
+            setRemainingQuestion={setRemainingQuestion}
+          />
         </VStack>
       </ScrollView>
+      <NextLevelDialog
+        isVisible={isLevelDialogVisible}
+        level={level}
+        score={score}
+        onPressNextLevel={() => {}}
+      />
     </SafeAreaView>
   );
 };
@@ -74,6 +130,12 @@ const styles = {
     fontWeight: 400,
     alignSelf: "center",
   },
+  level: {
+    color: "#fff",
+    fontSize: 24,
+    fontWeight: 800,
+    alignSelf: "center",
+  },
   topBar: {
     display: "flex",
     flexDirection: "row",
@@ -85,7 +147,7 @@ const styles = {
   },
   lives: {
     alignSelf: "center",
-    color: "#b31e14",
+    color: "#ff0000",
   },
   levelProgress: {
     alignSelf: "center",
