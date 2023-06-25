@@ -44,45 +44,102 @@ export default AnswerConfig = {
             isAnswered: true,
           },
           denomenator: {
-            value: 10,
+            value: 5,
             isAnswered: true,
           },
         },
         {
           numerator: {
-            value: 3,
+            value: 2,
             isAnswered: true,
           },
           denomenator: {
-            value: 6,
+            value: 7,
             isAnswered: true,
           },
         },
         {
           numerator: {
             value: null,
-            isAnswered: false,
+            isAnswered: true,
           },
           denomenator: {
             value: null,
-            isAnswered: false,
+            isAnswered: true,
           },
         },
       ],
       commonDenominator: [
         {
           numerator: {
-            value: 3,
+            value: 21,
+            isAnswered: false,
+          },
+          denomenator: {
+            value: 35,
+            isAnswered: false,
+          },
+        },
+        {
+          numerator: {
+            value: 10,
+            isAnswered: false,
+          },
+          denomenator: {
+            value: 35,
+            isAnswered: false,
+          },
+        },
+        {
+          numerator: {
+            value: 31,
+            isAnswered: false,
+          },
+          denomenator: {
+            value: 35,
+            isAnswered: false,
+          },
+        },
+      ],
+      simplify: [],
+    },
+    level3: {
+      given: [
+        {
+          numerator: {
+            value: 2,
             isAnswered: true,
           },
           denomenator: {
-            value: 10,
+            value: 3,
             isAnswered: true,
           },
         },
         {
           numerator: {
-            value: 3,
+            value: 4,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 6,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: null,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: null,
+            isAnswered: true,
+          },
+        },
+      ],
+      commonDenominator: [
+        {
+          numerator: {
+            value: 4,
             isAnswered: false,
           },
           denomenator: {
@@ -92,11 +149,21 @@ export default AnswerConfig = {
         },
         {
           numerator: {
-            value: null,
+            value: 4,
             isAnswered: false,
           },
           denomenator: {
-            value: null,
+            value: 6,
+            isAnswered: false,
+          },
+        },
+        {
+          numerator: {
+            value: 8,
+            isAnswered: false,
+          },
+          denomenator: {
+            value: 6,
             isAnswered: false,
           },
         },
@@ -104,6 +171,40 @@ export default AnswerConfig = {
       simplify: [
         {
           numerator: {
+            value: null,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: null,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: null,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: null,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 4,
+            isAnswered: false,
+          },
+          denomenator: {
+            value: 3,
+            isAnswered: false,
+          },
+        },
+      ],
+    },
+    level4: {
+      given: [
+        {
+          numerator: {
             value: 3,
             isAnswered: true,
           },
@@ -114,25 +215,243 @@ export default AnswerConfig = {
         },
         {
           numerator: {
-            value: 3,
-            isAnswered: false,
+            value: 4,
+            isAnswered: true,
           },
           denomenator: {
-            value: 6,
-            isAnswered: false,
+            value: 10,
+            isAnswered: true,
           },
         },
         {
           numerator: {
-            value: null,
+            value: 7,
             isAnswered: false,
           },
           denomenator: {
-            value: null,
+            value: 10,
             isAnswered: false,
           },
         },
       ],
+      commonDenominator: [],
+      simplify: [],
+    },
+    level5: {
+      given: [
+        {
+          numerator: {
+            value: 3,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 4,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 7,
+            isAnswered: false,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: false,
+          },
+        },
+      ],
+      commonDenominator: [],
+      simplify: [],
+    },
+    level6: {
+      given: [
+        {
+          numerator: {
+            value: 3,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 4,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 7,
+            isAnswered: false,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: false,
+          },
+        },
+      ],
+      commonDenominator: [],
+      simplify: [],
+    },
+    level7: {
+      given: [
+        {
+          numerator: {
+            value: 3,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 4,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 7,
+            isAnswered: false,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: false,
+          },
+        },
+      ],
+      commonDenominator: [],
+      simplify: [],
+    },
+    level8: {
+      given: [
+        {
+          numerator: {
+            value: 3,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 4,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 7,
+            isAnswered: false,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: false,
+          },
+        },
+      ],
+      commonDenominator: [],
+      simplify: [],
+    },
+    level9: {
+      given: [
+        {
+          numerator: {
+            value: 3,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 4,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 7,
+            isAnswered: false,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: false,
+          },
+        },
+      ],
+      commonDenominator: [],
+      simplify: [],
+    },
+    level10: {
+      given: [
+        {
+          numerator: {
+            value: 3,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 4,
+            isAnswered: true,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
+            value: 7,
+            isAnswered: false,
+          },
+          denomenator: {
+            value: 10,
+            isAnswered: false,
+          },
+        },
+      ],
+      commonDenominator: [],
+      simplify: [],
     },
   },
 };

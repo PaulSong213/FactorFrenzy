@@ -11,6 +11,8 @@ export default Formula = ({
   operation,
   remainingQuestion,
   setRemainingQuestion,
+  setLives,
+  lives,
 }) => {
   /*
     Tutorial reference
@@ -26,15 +28,23 @@ export default Formula = ({
       return "  "; // return empty operation for simplification
     else return operations[currentOperation].symbol;
   };
+  const [keyRenderIndex, setKeyRenderIndex] = useState(1);
+
+  useEffect(() => {
+    setKeyRenderIndex(keyRenderIndex + 1);
+    console.log("FORMULA RERENDER");
+  }, [currentProblem]);
 
   return (
     <View>
       {/* GIVEN */}
       <HStack m={8} spacing={12}>
         {currentProblem.given.map((value, index) => (
-          <HStack spacing={16} key={`given_${index}`}>
+          <HStack spacing={16} key={`given_${keyRenderIndex}_${index}`}>
             <VStack>
               <NumberContainer
+                setLives={setLives}
+                lives={lives}
                 remainingQuestion={remainingQuestion}
                 setRemainingQuestion={setRemainingQuestion}
                 number={value.numerator.isAnswered ? value.numerator.value : ""}
@@ -45,6 +55,8 @@ export default Formula = ({
                 <Divider color="#fff" />
               )}
               <NumberContainer
+                setLives={setLives}
+                lives={lives}
                 remainingQuestion={remainingQuestion}
                 setRemainingQuestion={setRemainingQuestion}
                 number={
@@ -66,24 +78,38 @@ export default Formula = ({
       </HStack>
 
       {/* COMMON DENOMINATOR */}
-      {/* {currentProblem.commonDenominator && (
+      {currentProblem.commonDenominator && (
         <HStack m={8} spacing={12}>
           {currentProblem.commonDenominator.map((value, index) => (
-            <HStack spacing={16} key={`commonDenominator_${index}`}>
+            <HStack
+              spacing={16}
+              key={`commonDenominator_${keyRenderIndex}_${index}`}
+            >
               <VStack>
                 <NumberContainer
-                  currentProblem={currentProblem}
-                  setCurrentProblem={setCurrentProblem}
-                  _isEditable={true}
+                  setLives={setLives}
+                  lives={lives}
+                  remainingQuestion={remainingQuestion}
+                  setRemainingQuestion={setRemainingQuestion}
+                  number={
+                    value.numerator.isAnswered ? value.numerator.value : ""
+                  }
+                  _isEditable={!value.numerator.isAnswered}
                   correctAnswer={value.numerator.value}
                 />
+
                 {value.numerator.value && value.denomenator.value && (
                   <Divider color="#fff" />
                 )}
                 <NumberContainer
-                  currentProblem={currentProblem}
-                  setCurrentProblem={setCurrentProblem}
-                  _isEditable={true}
+                  setLives={setLives}
+                  lives={lives}
+                  remainingQuestion={remainingQuestion}
+                  setRemainingQuestion={setRemainingQuestion}
+                  number={
+                    value.denomenator.isAnswered ? value.denomenator.value : ""
+                  }
+                  _isEditable={!value.denomenator.isAnswered}
                   correctAnswer={value.denomenator.value}
                 />
               </VStack>
@@ -101,44 +127,56 @@ export default Formula = ({
             </HStack>
           ))}
         </HStack>
-      )} */}
+      )}
 
       {/* SIMPLIFY */}
-      {/* <HStack m={8} spacing={12}>
-        {currentProblem.simplify.map((value, index) => (
-          <HStack spacing={16} key={`simplify${index}`}>
-            <VStack>
-              <NumberContainer
-                currentProblem={currentProblem}
-                setCurrentProblem={setCurrentProblem}
-                _isEditable={true}
-                correctAnswer={value.numerator.value}
-              />
-              {value.numerator.value && value.denomenator.value && (
-                <Divider color="#fff" />
+      {currentProblem.simplify && (
+        <HStack m={8} spacing={12}>
+          {currentProblem.simplify.map((value, index) => (
+            <HStack spacing={16} key={`simplify_${keyRenderIndex}_${index}`}>
+              <VStack>
+                <NumberContainer
+                  setLives={setLives}
+                  lives={lives}
+                  remainingQuestion={remainingQuestion}
+                  setRemainingQuestion={setRemainingQuestion}
+                  number={
+                    value.numerator.isAnswered ? value.numerator.value : ""
+                  }
+                  _isEditable={!value.numerator.isAnswered}
+                  correctAnswer={value.numerator.value}
+                />
+                {value.numerator.value && value.denomenator.value && (
+                  <Divider color="#fff" />
+                )}
+                <NumberContainer
+                  setLives={setLives}
+                  lives={lives}
+                  remainingQuestion={remainingQuestion}
+                  setRemainingQuestion={setRemainingQuestion}
+                  number={
+                    value.denomenator.isAnswered ? value.denomenator.value : ""
+                  }
+                  _isEditable={!value.denomenator.isAnswered}
+                  correctAnswer={value.denomenator.value}
+                />
+              </VStack>
+              {index < currentProblem.simplify.length - 1 && (
+                <View style={styles.operationContainer}>
+                  <Text style={styles.number}>
+                    {getOperation(
+                      operation,
+                      currentProblem.simplify.length,
+                      index,
+                      true
+                    )}
+                  </Text>
+                </View>
               )}
-              <NumberContainer
-                currentProblem={currentProblem}
-                setCurrentProblem={setCurrentProblem}
-                _isEditable={true}
-                correctAnswer={value.denomenator.value}
-              />
-            </VStack>
-            {index < currentProblem.simplify.length - 1 && (
-              <View style={styles.operationContainer}>
-                <Text style={styles.number}>
-                  {getOperation(
-                    operation,
-                    currentProblem.simplify.length,
-                    index,
-                    true
-                  )}
-                </Text>
-              </View>
-            )}
-          </HStack>
-        ))}
-      </HStack> */}
+            </HStack>
+          ))}
+        </HStack>
+      )}
     </View>
   );
 };
@@ -189,6 +227,8 @@ const NumberContainer = ({
   correctAnswer,
   setRemainingQuestion,
   remainingQuestion,
+  setLives,
+  lives,
 }) => {
   const [isFocused, setIsFocused] = useState(true);
   const [numValue, setNumValue] = useState("");
@@ -203,7 +243,12 @@ const NumberContainer = ({
     if (answer == correctAnswer) {
       setIsEditable(false);
       setRemainingQuestion(remainingQuestion - 1);
+    } else if (String(answer).length >= String(correctAnswer).length) {
+      // handle wrong answer
+      setNumValue("");
+      setLives(lives - 1);
     }
+
     console.log(answer, correctAnswer);
   };
   return (

@@ -13,11 +13,15 @@ import { Dimensions } from "react-native";
 import Formula from "./components/Formula";
 import NextLevelDialog from "./components/NextLevelDialog";
 import AnswerConfig from "../../config/AnswerConfig";
+import LifeRemoveDialog from "./components/LifeRemoveDialog";
+import GameOverDialog from "./components/GameOverDialog";
 
 export default GameScreen = ({ navigation, route }) => {
   const operation = route.params.operation;
+  const checkpoints = [1, 3, 5, 8];
+  const defaultLives = 5;
   const [score, setScore] = useState(0);
-  const [lives, setLives] = useState(5);
+  const [lives, setLives] = useState(defaultLives);
   const [level, setLevel] = useState(1);
   const [currentProblem, setCurrentProblem] = useState(
     AnswerConfig[operation][`level${level}`]
@@ -28,6 +32,25 @@ export default GameScreen = ({ navigation, route }) => {
   const firstUpdate = useRef(true);
   const [isLevelDialogVisible, setIsLevelDialogVisible] = useState(false);
   const windowWidth = Dimensions.get("window").width;
+
+  function returnToCheckpoint() {
+    let lowerCheckpoint = checkpoints[0];
+
+    for (let i = 0; i < checkpoints.length; i++) {
+      if (!checkpoints[i + 1]) lowerCheckpoint = checkpoints[i];
+      if (checkpoints[i + 1] > level) {
+        lowerCheckpoint = checkpoints[i];
+        break;
+      }
+    }
+
+    setLevel(lowerCheckpoint);
+    const nextProblem = AnswerConfig[operation][`level${lowerCheckpoint}`];
+    setCurrentProblem(nextProblem);
+    setRemainingQuestion(countIsAnsweredFalse(nextProblem));
+    setLives(defaultLives);
+  }
+
   function countIsAnsweredFalse(obj) {
     let count = 0;
 
@@ -53,7 +76,8 @@ export default GameScreen = ({ navigation, route }) => {
   }
 
   useEffect(() => {
-    if (firstUpdate.current) {
+    console.log("Remaining Questions========= ", remainingQuestion);
+    if (firstUpdate.current || remainingQuestion < 0) {
       firstUpdate.current = false;
       return;
     }
@@ -97,6 +121,8 @@ export default GameScreen = ({ navigation, route }) => {
             operation={route.params.operation}
             remainingQuestion={remainingQuestion}
             setRemainingQuestion={setRemainingQuestion}
+            setLives={setLives}
+            lives={lives}
           />
         </VStack>
       </ScrollView>
@@ -104,7 +130,23 @@ export default GameScreen = ({ navigation, route }) => {
         isVisible={isLevelDialogVisible}
         level={level}
         score={score}
-        onPressNextLevel={() => {}}
+        onPressNextLevel={() => {
+          const newLevel = level + 1;
+          setLevel(newLevel);
+          setIsLevelDialogVisible(false);
+          const nextProblem = AnswerConfig[operation][`level${newLevel}`];
+          setCurrentProblem(nextProblem);
+          setRemainingQuestion(countIsAnsweredFalse(nextProblem));
+          // TODO: Save score, level, and remaining lives in async storage
+        }}
+      />
+      <LifeRemoveDialog lives={lives} />
+      <GameOverDialog
+        lives={lives}
+        setCurrentProblem={setCurrentProblem}
+        onPressBackCheckpoint={() => {
+          returnToCheckpoint();
+        }}
       />
     </SafeAreaView>
   );
