@@ -9,14 +9,27 @@ export default NextLevelDialog = ({
   level,
   score,
   onPressNextLevel,
+  onPressBackHome,
+  isAllLevelDialogVisible,
 }) => {
   if (isVisible) {
     return (
+      // Navigating to the next level modal
       <View style={styles.parentContainer}>
         <View style={styles.dialogContainer}>
           <Text style={styles.text}>Level {level} Completed!</Text>
           <Text style={styles.text}>Score {score} </Text>
           <Button title="Next Level" onPress={onPressNextLevel} />
+        </View>
+      </View>
+    );
+  } else if (isAllLevelDialogVisible) {
+    return (
+      // ALL LEVEL DONE - show the medal
+      <View style={styles.parentContainer}>
+        <View style={styles.dialogContainer}>
+          <Text style={styles.text}>Congats! All level done</Text>
+          <Button title="Go Back Home" onPress={onPressBackHome} />
         </View>
       </View>
     );

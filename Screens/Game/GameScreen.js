@@ -15,6 +15,7 @@ import NextLevelDialog from "./components/NextLevelDialog";
 import AnswerConfig from "../../config/AnswerConfig";
 import LifeRemoveDialog from "./components/LifeRemoveDialog";
 import GameOverDialog from "./components/GameOverDialog";
+import PowerUpsNavigation from "./components/PowerUpsNavigation";
 
 export default GameScreen = ({ navigation, route }) => {
   const operation = route.params.operation;
@@ -22,15 +23,20 @@ export default GameScreen = ({ navigation, route }) => {
   const defaultLives = 5;
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(defaultLives);
-  const [level, setLevel] = useState(1);
+  const [level, setLevel] = useState(3);
+
   const [currentProblem, setCurrentProblem] = useState(
     AnswerConfig[operation][`level${level}`]
+  );
+  const [maxLevel, setMaxLevel] = useState(
+    Object.keys(AnswerConfig[operation]).length
   );
   const [remainingQuestion, setRemainingQuestion] = useState(
     countIsAnsweredFalse(currentProblem)
   );
   const firstUpdate = useRef(true);
   const [isLevelDialogVisible, setIsLevelDialogVisible] = useState(false);
+  const [isAllLevelDialogVisible, setIsAllLevelDialogVisible] = useState(false);
   const windowWidth = Dimensions.get("window").width;
 
   function returnToCheckpoint() {
@@ -82,7 +88,11 @@ export default GameScreen = ({ navigation, route }) => {
       return;
     }
     setScore(score + 20);
-    if (remainingQuestion === 0) setIsLevelDialogVisible(true);
+
+    if (remainingQuestion === 0) {
+      if (level === maxLevel) setIsAllLevelDialogVisible(true);
+      else setIsLevelDialogVisible(true);
+    }
   }, [remainingQuestion]);
 
   return (
@@ -130,6 +140,10 @@ export default GameScreen = ({ navigation, route }) => {
         isVisible={isLevelDialogVisible}
         level={level}
         score={score}
+        isAllLevelDialogVisible={isAllLevelDialogVisible}
+        onPressBackHome={() => {
+          navigation.navigate("Home");
+        }}
         onPressNextLevel={() => {
           const newLevel = level + 1;
           setLevel(newLevel);
@@ -140,6 +154,7 @@ export default GameScreen = ({ navigation, route }) => {
           // TODO: Save score, level, and remaining lives in async storage
         }}
       />
+
       <LifeRemoveDialog lives={lives} />
       <GameOverDialog
         lives={lives}
@@ -148,6 +163,7 @@ export default GameScreen = ({ navigation, route }) => {
           returnToCheckpoint();
         }}
       />
+      <PowerUpsNavigation />
     </SafeAreaView>
   );
 };
