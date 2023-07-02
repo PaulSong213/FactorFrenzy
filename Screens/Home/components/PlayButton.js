@@ -4,7 +4,7 @@ import ProgressBar from "react-native-progress/Bar";
 import { Ionicons } from "@expo/vector-icons";
 import { gameDetails, gameTypes } from "../../../config/GameConfig";
 
-export default PlayButton = ({ gameType, onPlayClick }) => {
+export default PlayButton = ({ gameType, onPlayClick, level }) => {
   return (
     <View>
       <TouchableOpacity
@@ -18,8 +18,8 @@ export default PlayButton = ({ gameType, onPlayClick }) => {
         <View>
           <Text style={styles.gameTitle}>{gameDetails[gameType].title}</Text>
           <Text style={styles.gameSubtitle}>FRACTION</Text>
-          <ProgressBar width={110} color={"#fff"} progress={0.3} />
-          <Text style={styles.gameProgressText}>6/10 Completed</Text>
+          <ProgressBar width={110} color={"#fff"} progress={level / 10} />
+          <Text style={styles.gameProgressText}>{level}/10 Completed</Text>
         </View>
         <Button
           onPress={onPlayClick}

@@ -133,6 +133,7 @@ export default PowerUpsNavigation = ({
                       powerUpChoice();
                       break;
                   }
+                  // TODO: Add sound effect when power is used
                   setScore(score - toConfirmUse.cost);
                   setToConfirmUse(null);
                 }}

@@ -13,6 +13,7 @@ export default GameOverDialog = ({
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     if (lives === 0) {
+      // TODO: Add sound effect game over
       setIsVisible(true);
       setCurrentProblem({ given: [], commonDenominator: [], simplify: [] });
     } else setIsVisible(false);
@@ -20,6 +21,7 @@ export default GameOverDialog = ({
 
   if (isVisible) {
     return (
+      // TODO: Design this page - https://in.pinterest.com/pin/775393260852950127/
       <View style={styles.parentContainer}>
         <View style={styles.dialogContainer}>
           <Text style={styles.text}>GAME OVER!</Text>

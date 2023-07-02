@@ -17,14 +17,16 @@ import LifeRemoveDialog from "./components/LifeRemoveDialog";
 import GameOverDialog from "./components/GameOverDialog";
 import PowerUpsNavigation from "./components/PowerUpsNavigation";
 import ChoicesDialog from "./components/ChoicesDialog";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default GameScreen = ({ navigation, route }) => {
   const operation = route.params.operation;
+  const gameData = route.params.gameData;
   const checkpoints = [1, 3, 5, 8];
   const defaultLives = 5;
-  const [score, setScore] = useState(0);
-  const [lives, setLives] = useState(defaultLives);
-  const [level, setLevel] = useState(1);
+  const [score, setScore] = useState(gameData[operation].score + 9999);
+  const [lives, setLives] = useState(gameData[operation].lives);
+  const [level, setLevel] = useState(gameData[operation].level);
   const [powerUpHintUpdater, setPowerUpHintUpdater] = useState(0);
   const [powerUpSkipUpdater, setPowerUpSkipUpdater] = useState(0);
   const [powerUpChoiceUpdater, setPowerUpChoiceUpdater] = useState(0);
@@ -146,6 +148,28 @@ export default GameScreen = ({ navigation, route }) => {
       if (currentRemainingQuestions <= 0) clearInterval(skipInterval);
     }, 1000);
   }, [powerUpSkipUpdater]);
+
+  useEffect(() => {
+    console.log(gameData);
+    if (!gameData) return;
+    let newGameData = gameData;
+    newGameData[operation].lives = lives;
+    newGameData[operation].score = score;
+    newGameData[operation].level = level;
+    const storeGameData = async (value) => {
+      try {
+        await AsyncStorage.setItem("gameData", JSON.stringify(newGameData));
+      } catch (e) {
+        // saving error
+        console.error(e);
+      }
+    };
+    storeGameData();
+  }, [lives, score, level]);
+
+  useEffect(() => {
+    // TODO: Add background music when game starts
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

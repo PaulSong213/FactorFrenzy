@@ -15,6 +15,7 @@ export default NextLevelDialog = ({
   if (isVisible) {
     return (
       // Navigating to the next level modal
+      // TODO: Design this screen - https://www.pinterest.ph/llli/game-ui-end-level-screens/
       <View style={styles.parentContainer}>
         <View style={styles.dialogContainer}>
           <Text style={styles.text}>Level {level} Completed!</Text>
@@ -26,6 +27,7 @@ export default NextLevelDialog = ({
   } else if (isAllLevelDialogVisible) {
     return (
       // ALL LEVEL DONE - show the medal
+      // TODO: Design this screen (SHOWING THE MEDAL) - https://www.pinterest.ph/llli/game-ui-end-level-screens/
       <View style={styles.parentContainer}>
         <View style={styles.dialogContainer}>
           <Text style={styles.text}>Congats! All level done</Text>

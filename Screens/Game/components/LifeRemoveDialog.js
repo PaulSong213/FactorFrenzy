@@ -10,6 +10,7 @@ export default LifeRemoveDialog = ({ lives }) => {
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     if (lives < prevLives) {
+      // TODO: Add sound effect when live is removed
       setIsVisible(true);
       setTimeout(() => setIsVisible(false), 200);
     }
