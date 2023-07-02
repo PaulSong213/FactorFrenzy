@@ -6,7 +6,14 @@ import { TouchableOpacity, Keyboard } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-export default PowerUpsNavigation = ({}) => {
+export default PowerUpsNavigation = ({
+  powerUpHint,
+  powerUpSkip,
+  powerUpChoice,
+  willShowChoices,
+  score,
+  setScore,
+}) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [toConfirmUse, setToConfirmUse] = useState(null);
   useEffect(() => {
@@ -29,26 +36,26 @@ export default PowerUpsNavigation = ({}) => {
     };
   }, []);
   const powerUps = {
-    hint: {
-      title: "Hint",
-      ionIcon: "contrast",
-      color: "#e53f71",
-      description: "Answer 1 question on problem",
-      cost: 100,
-    },
     choices: {
       title: "Choices",
       ionIcon: "disc",
       color: "#e53f71",
       description: "Show all the possible answer in the problem",
-      cost: 100,
+      cost: 300,
+    },
+    hint: {
+      title: "Hint",
+      ionIcon: "contrast",
+      color: "#e53f71",
+      description: "Answer 1 question on problem",
+      cost: 200,
     },
     skipLevel: {
       title: "Skip",
       ionIcon: "play-circle",
       color: "#e53f71",
       description: "Automatically win this level",
-      cost: 300,
+      cost: 500,
     },
   };
 
@@ -65,10 +72,16 @@ export default PowerUpsNavigation = ({}) => {
             {Object.entries(powerUps).map(([key, powerUp]) => {
               return (
                 <TouchableOpacity
+                  disabled={willShowChoices && powerUp.title === "Choices"}
                   onPress={() => {
                     setToConfirmUse(powerUp);
                   }}
-                  style={styles.powerContainer}
+                  style={[
+                    styles.powerContainer,
+                    willShowChoices && powerUp.title === "Choices"
+                      ? { opacity: 0 }
+                      : {},
+                  ]}
                   key={key}
                 >
                   <Ionicons
@@ -86,6 +99,13 @@ export default PowerUpsNavigation = ({}) => {
         {toConfirmUse && (
           <View style={styles.confirmDialogContainer}>
             <View style={styles.confirmDialog}>
+              <TouchableOpacity
+                onPress={() => {
+                  setToConfirmUse(null);
+                }}
+              >
+                <Ionicons size={45} color={"#fff"} name={"close"} />
+              </TouchableOpacity>
               <Text style={styles.text}>
                 Power Up Type: {toConfirmUse.title}
               </Text>
@@ -94,9 +114,26 @@ export default PowerUpsNavigation = ({}) => {
               </Text>
               <Text style={styles.text}>Score Cost: {toConfirmUse.cost}</Text>
               <Button
-                title="Use Power Up"
+                disabled={score < toConfirmUse.cost}
+                title={
+                  score >= toConfirmUse.cost
+                    ? "Use Power Up"
+                    : "Insuffient Score"
+                }
                 color="#e54072"
                 onPress={() => {
+                  switch (toConfirmUse.title) {
+                    case "Hint":
+                      powerUpHint();
+                      break;
+                    case "Skip":
+                      powerUpSkip();
+                      break;
+                    case "Choices":
+                      powerUpChoice();
+                      break;
+                  }
+                  setScore(score - toConfirmUse.cost);
                   setToConfirmUse(null);
                 }}
               />
