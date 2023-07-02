@@ -34,18 +34,22 @@ export const gameDetails = {
 
 export const operations = {
   addition: {
+    gameType: gameTypes.addingFraction,
     symbol: "+",
     name: "addition",
   },
   subtraction: {
+    gameType: gameTypes.subtractingFraction,
     symbol: "-",
     name: "subtraction",
   },
   multiplication: {
+    gameType: gameTypes.multiplyingFraction,
     symbol: "x",
     name: "multiplication",
   },
   division: {
+    gameType: gameTypes.dividingFraction,
     symbol: "÷",
     name: "division",
   },

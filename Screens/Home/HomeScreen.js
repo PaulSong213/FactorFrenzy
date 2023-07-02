@@ -8,26 +8,19 @@ export default HomeScreen = ({ navigation }) => {
       <ScrollView>
         <Text style={styles.title}>GAMES</Text>
         <VStack spacing={14}>
-          <View>
-            <PlayButton
-              onPlayClick={() => {
-                navigation.navigate("Game", {
-                  gameType: gameTypes.addingFraction,
-                  operation: operations.addition.name,
-                });
-              }}
-              gameType={gameTypes.addingFraction}
-            />
-          </View>
-          <View>
-            <PlayButton gameType={gameTypes.subtractingFraction} />
-          </View>
-          <View>
-            <PlayButton gameType={gameTypes.multiplyingFraction} />
-          </View>
-          <View>
-            <PlayButton gameType={gameTypes.dividingFraction} />
-          </View>
+          {Object.entries(operations).map(([key, operation]) => (
+            <View>
+              <PlayButton
+                onPlayClick={() => {
+                  navigation.navigate("Game", {
+                    gameType: operation.gameType,
+                    operation: operation.name,
+                  });
+                }}
+                gameType={operation.gameType}
+              />
+            </View>
+          ))}
         </VStack>
       </ScrollView>
     </SafeAreaView>
