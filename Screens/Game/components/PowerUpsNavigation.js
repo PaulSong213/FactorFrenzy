@@ -98,6 +98,7 @@ export default PowerUpsNavigation = ({
         )}
         {toConfirmUse && (
           <View style={styles.confirmDialogContainer}>
+            // TODO : Design this dialog
             <View style={styles.confirmDialog}>
               <TouchableOpacity
                 onPress={() => {
