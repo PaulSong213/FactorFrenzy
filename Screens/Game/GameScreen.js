@@ -16,15 +16,20 @@ import AnswerConfig from "../../config/AnswerConfig";
 import LifeRemoveDialog from "./components/LifeRemoveDialog";
 import GameOverDialog from "./components/GameOverDialog";
 import PowerUpsNavigation from "./components/PowerUpsNavigation";
+import ChoicesDialog from "./components/ChoicesDialog";
 
 export default GameScreen = ({ navigation, route }) => {
   const operation = route.params.operation;
   const checkpoints = [1, 3, 5, 8];
   const defaultLives = 5;
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(200);
   const [lives, setLives] = useState(defaultLives);
   const [level, setLevel] = useState(3);
   const [powerUpHintUpdater, setPowerUpHintUpdater] = useState(0);
+  const [powerUpSkipUpdater, setPowerUpSkipUpdater] = useState(0);
+  const [powerUpChoiceUpdater, setPowerUpChoiceUpdater] = useState(0);
+  const [willShowChoices, setWillShowChoices] = useState(false);
+  const [answerChoices, setAnswerChoices] = useState([]);
 
   const [currentProblem, setCurrentProblem] = useState(
     AnswerConfig[operation][`level${level}`]
@@ -82,6 +87,30 @@ export default GameScreen = ({ navigation, route }) => {
     return count;
   }
 
+  function getAnswers(obj) {
+    let answers = [];
+
+    function countIsAnsweredFalseRecursive(item) {
+      if (typeof item === "object" && item !== null) {
+        if (item.hasOwnProperty("isAnswered") && item.isAnswered === false) {
+          answers.push(item.value);
+        } else {
+          Object.values(item).forEach((value) => {
+            countIsAnsweredFalseRecursive(value);
+          });
+        }
+      }
+    }
+
+    Object.values(obj).forEach((arr) => {
+      arr.forEach((item) => {
+        countIsAnsweredFalseRecursive(item);
+      });
+    });
+
+    return answers;
+  }
+
   useEffect(() => {
     console.log("Remaining Questions========= ", remainingQuestion);
     if (firstUpdate.current || remainingQuestion < 0) {
@@ -95,6 +124,28 @@ export default GameScreen = ({ navigation, route }) => {
       else setIsLevelDialogVisible(true);
     }
   }, [remainingQuestion]);
+
+  useEffect(() => {
+    if (powerUpChoiceUpdater === 0) return;
+    const problem = currentProblem;
+    console.log(problem);
+    setAnswerChoices(getAnswers(problem));
+    // console.log(getAnswers(problem));
+    setWillShowChoices(true);
+  }, [powerUpChoiceUpdater]);
+
+  useEffect(() => {
+    if (powerUpSkipUpdater === 0) return;
+    let currentLevel = level;
+    let currentPowerUpHintUpdater = powerUpHintUpdater;
+    let currentRemainingQuestions = remainingQuestion;
+    const skipInterval = setInterval(() => {
+      currentPowerUpHintUpdater++;
+      currentRemainingQuestions--;
+      setPowerUpHintUpdater(currentPowerUpHintUpdater);
+      if (currentRemainingQuestions <= 0) clearInterval(skipInterval);
+    }, 1000);
+  }, [powerUpSkipUpdater]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -171,6 +222,20 @@ export default GameScreen = ({ navigation, route }) => {
         powerUpHint={() => {
           setPowerUpHintUpdater(powerUpHintUpdater + 1);
         }}
+        powerUpSkip={() => {
+          setPowerUpSkipUpdater(powerUpSkipUpdater + 1);
+        }}
+        powerUpChoice={() => {
+          if (!willShowChoices)
+            setPowerUpChoiceUpdater(powerUpChoiceUpdater + 1);
+        }}
+        willShowChoices={willShowChoices}
+        score={score}
+        setScore={setScore}
+      />
+      <ChoicesDialog
+        willShowChoices={willShowChoices}
+        answerChoices={answerChoices}
       />
     </SafeAreaView>
   );
