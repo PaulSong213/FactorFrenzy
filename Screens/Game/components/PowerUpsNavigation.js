@@ -6,7 +6,7 @@ import { TouchableOpacity, Keyboard } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-export default PowerUpsNavigation = ({}) => {
+export default PowerUpsNavigation = ({ powerUpHint }) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [toConfirmUse, setToConfirmUse] = useState(null);
   useEffect(() => {
@@ -34,21 +34,21 @@ export default PowerUpsNavigation = ({}) => {
       ionIcon: "contrast",
       color: "#e53f71",
       description: "Answer 1 question on problem",
-      cost: 100,
+      cost: 200,
     },
     choices: {
       title: "Choices",
       ionIcon: "disc",
       color: "#e53f71",
       description: "Show all the possible answer in the problem",
-      cost: 100,
+      cost: 300,
     },
     skipLevel: {
       title: "Skip",
       ionIcon: "play-circle",
       color: "#e53f71",
       description: "Automatically win this level",
-      cost: 300,
+      cost: 500,
     },
   };
 
@@ -97,6 +97,7 @@ export default PowerUpsNavigation = ({}) => {
                 title="Use Power Up"
                 color="#e54072"
                 onPress={() => {
+                  if (toConfirmUse.title === "Hint") powerUpHint();
                   setToConfirmUse(null);
                 }}
               />

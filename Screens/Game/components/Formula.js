@@ -13,6 +13,9 @@ export default Formula = ({
   setRemainingQuestion,
   setLives,
   lives,
+  powerUpHintUpdater,
+  setPowerUpHintUpdater,
+  level,
 }) => {
   /*
     Tutorial reference
@@ -28,8 +31,8 @@ export default Formula = ({
       return "  "; // return empty operation for simplification
     else return operations[currentOperation].symbol;
   };
-  const [keyRenderIndex, setKeyRenderIndex] = useState(1);
-
+  const [keyRenderIndex, setKeyRenderIndex] = useState(level - 1);
+  const [idsToUpdateHint, setIdsToUpdateHint] = useState([]);
   useEffect(() => {
     setKeyRenderIndex(keyRenderIndex + 1);
     console.log("FORMULA RERENDER");
@@ -43,6 +46,15 @@ export default Formula = ({
           <HStack spacing={16} key={`given_${keyRenderIndex}_${index}`}>
             <VStack>
               <NumberContainer
+                level={level}
+                priorityIndex={
+                  String(keyRenderIndex + 0) + String(index) + String(1)
+                }
+                keyRenderIndex={keyRenderIndex}
+                setPowerUpHintUpdater={setPowerUpHintUpdater}
+                powerUpHintUpdater={powerUpHintUpdater}
+                setIdsToUpdateHint={setIdsToUpdateHint}
+                idsToUpdateHint={idsToUpdateHint}
                 setLives={setLives}
                 lives={lives}
                 remainingQuestion={remainingQuestion}
@@ -55,6 +67,15 @@ export default Formula = ({
                 <Divider color="#fff" />
               )}
               <NumberContainer
+                level={level}
+                priorityIndex={
+                  String(keyRenderIndex + 0) + String(index) + String(2)
+                }
+                keyRenderIndex={keyRenderIndex}
+                setPowerUpHintUpdater={setPowerUpHintUpdater}
+                powerUpHintUpdater={powerUpHintUpdater}
+                setIdsToUpdateHint={setIdsToUpdateHint}
+                idsToUpdateHint={idsToUpdateHint}
                 setLives={setLives}
                 lives={lives}
                 remainingQuestion={remainingQuestion}
@@ -87,6 +108,15 @@ export default Formula = ({
             >
               <VStack>
                 <NumberContainer
+                  level={level}
+                  priorityIndex={
+                    String(keyRenderIndex + 1) + String(index) + String(1)
+                  }
+                  keyRenderIndex={keyRenderIndex}
+                  setPowerUpHintUpdater={setPowerUpHintUpdater}
+                  powerUpHintUpdater={powerUpHintUpdater}
+                  setIdsToUpdateHint={setIdsToUpdateHint}
+                  idsToUpdateHint={idsToUpdateHint}
                   setLives={setLives}
                   lives={lives}
                   remainingQuestion={remainingQuestion}
@@ -102,6 +132,15 @@ export default Formula = ({
                   <Divider color="#fff" />
                 )}
                 <NumberContainer
+                  level={level}
+                  priorityIndex={
+                    String(keyRenderIndex + 1) + String(index) + String(2)
+                  }
+                  keyRenderIndex={keyRenderIndex}
+                  setPowerUpHintUpdater={setPowerUpHintUpdater}
+                  powerUpHintUpdater={powerUpHintUpdater}
+                  setIdsToUpdateHint={setIdsToUpdateHint}
+                  idsToUpdateHint={idsToUpdateHint}
                   setLives={setLives}
                   lives={lives}
                   remainingQuestion={remainingQuestion}
@@ -136,6 +175,15 @@ export default Formula = ({
             <HStack spacing={16} key={`simplify_${keyRenderIndex}_${index}`}>
               <VStack>
                 <NumberContainer
+                  level={level}
+                  priorityIndex={
+                    String(keyRenderIndex + 2) + String(index) + String(1)
+                  }
+                  keyRenderIndex={keyRenderIndex}
+                  setPowerUpHintUpdater={setPowerUpHintUpdater}
+                  powerUpHintUpdater={powerUpHintUpdater}
+                  setIdsToUpdateHint={setIdsToUpdateHint}
+                  idsToUpdateHint={idsToUpdateHint}
                   setLives={setLives}
                   lives={lives}
                   remainingQuestion={remainingQuestion}
@@ -150,6 +198,15 @@ export default Formula = ({
                   <Divider color="#fff" />
                 )}
                 <NumberContainer
+                  level={level}
+                  priorityIndex={
+                    String(keyRenderIndex + 2) + String(index) + String(2)
+                  }
+                  keyRenderIndex={keyRenderIndex}
+                  setPowerUpHintUpdater={setPowerUpHintUpdater}
+                  powerUpHintUpdater={powerUpHintUpdater}
+                  setIdsToUpdateHint={setIdsToUpdateHint}
+                  idsToUpdateHint={idsToUpdateHint}
                   setLives={setLives}
                   lives={lives}
                   remainingQuestion={remainingQuestion}
@@ -229,6 +286,13 @@ const NumberContainer = ({
   remainingQuestion,
   setLives,
   lives,
+  powerUpHintUpdater,
+  setPowerUpHintUpdater,
+  priorityIndex,
+  setIdsToUpdateHint,
+  idsToUpdateHint,
+  keyRenderIndex,
+  level,
 }) => {
   const [isFocused, setIsFocused] = useState(true);
   const [numValue, setNumValue] = useState("");
@@ -236,13 +300,55 @@ const NumberContainer = ({
   const [isEditable, setIsEditable] = useState(_isEditable);
   useEffect(() => {
     if (number) setNumValue(number);
-    if (number === null || correctAnswer === null) setIsHidden(true); // hide the inputs
+    if (number === null || correctAnswer === null) {
+      setIsHidden(true); // hide the inputs
+    }
   }, []);
-  const handleAnswer = (answer) => {
+
+  useEffect(() => {
+    setPowerUpHintUpdater(0);
+    setIdsToUpdateHint([]);
+  }, [level]);
+
+  useEffect(() => {
+    // Adding list of IDs for HINT
+    console.log(level, keyRenderIndex);
+    if (!keyRenderIndex.toString().startsWith(level.toString())) return;
+    if (keyRenderIndex <= 0) return; // skip first render
+    if (!isEditable) return;
+    if (number === null || correctAnswer === null) return;
+    console.log("Adding ===== " + priorityIndex);
+    let newIdsToUpdateHint = idsToUpdateHint;
+    newIdsToUpdateHint.push(String(priorityIndex));
+    setIdsToUpdateHint(newIdsToUpdateHint);
+  }, [keyRenderIndex]);
+
+  useEffect(() => {
+    // handle having hint
+    if (powerUpHintUpdater <= 0) return;
+    if (number === null || correctAnswer === null) return;
+    // Convert the strings to numbers
+    const numbers = idsToUpdateHint.map(Number);
+    // Find the minimum number
+    const mostPriorityID = Math.min(...numbers);
+    if (String(mostPriorityID) != String(priorityIndex)) return;
+    console.log("Power Up Used : HINT", mostPriorityID);
+    handleAnswer(correctAnswer, mostPriorityID);
+  }, [powerUpHintUpdater]);
+
+  const handleAnswer = (answer, mostPriorityID = null) => {
     setNumValue(answer);
     if (answer == correctAnswer) {
       setIsEditable(false);
       setRemainingQuestion(remainingQuestion - 1);
+      if (mostPriorityID) {
+        // remove the updated hint
+        let newIdsToUpdateHint = idsToUpdateHint.filter(
+          (value) => value !== String(mostPriorityID)
+        );
+        console.log(newIdsToUpdateHint);
+        setIdsToUpdateHint(newIdsToUpdateHint);
+      }
     } else if (String(answer).length >= String(correctAnswer).length) {
       // handle wrong answer
       setNumValue("");

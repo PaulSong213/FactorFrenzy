@@ -24,6 +24,7 @@ export default GameScreen = ({ navigation, route }) => {
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(defaultLives);
   const [level, setLevel] = useState(3);
+  const [powerUpHintUpdater, setPowerUpHintUpdater] = useState(0);
 
   const [currentProblem, setCurrentProblem] = useState(
     AnswerConfig[operation][`level${level}`]
@@ -127,6 +128,9 @@ export default GameScreen = ({ navigation, route }) => {
           />
           <Text style={styles.level}>LEVEL {level}</Text>
           <Formula
+            level={level}
+            powerUpHintUpdater={powerUpHintUpdater}
+            setPowerUpHintUpdater={setPowerUpHintUpdater}
             currentProblem={currentProblem}
             operation={route.params.operation}
             remainingQuestion={remainingQuestion}
@@ -163,7 +167,11 @@ export default GameScreen = ({ navigation, route }) => {
           returnToCheckpoint();
         }}
       />
-      <PowerUpsNavigation />
+      <PowerUpsNavigation
+        powerUpHint={() => {
+          setPowerUpHintUpdater(powerUpHintUpdater + 1);
+        }}
+      />
     </SafeAreaView>
   );
 };
