@@ -24,7 +24,7 @@ export default GameScreen = ({ navigation, route }) => {
   const gameData = route.params.gameData;
   const checkpoints = [1, 3, 5, 8];
   const defaultLives = 5;
-  const [score, setScore] = useState(gameData[operation].score + 9999);
+  const [score, setScore] = useState(gameData[operation].score);
   const [lives, setLives] = useState(gameData[operation].lives);
   const [level, setLevel] = useState(gameData[operation].level);
   const [powerUpHintUpdater, setPowerUpHintUpdater] = useState(0);

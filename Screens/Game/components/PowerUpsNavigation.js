@@ -59,100 +59,97 @@ export default PowerUpsNavigation = ({
     },
   };
 
-  if (!isKeyboardVisible) {
-    return (
-      <View
-        style={[
-          styles.parentContainer,
-          toConfirmUse ? { height: windowHeight } : "",
-        ]}
-      >
-        {!toConfirmUse && (
-          <View style={styles.dialogContainer}>
-            {Object.entries(powerUps).map(([key, powerUp]) => {
-              return (
-                <TouchableOpacity
-                  disabled={willShowChoices && powerUp.title === "Choices"}
-                  onPress={() => {
-                    setToConfirmUse(powerUp);
-                  }}
-                  style={[
-                    styles.powerContainer,
-                    willShowChoices && powerUp.title === "Choices"
-                      ? { opacity: 0 }
-                      : {},
-                  ]}
-                  key={key}
-                >
-                  <Ionicons
-                    style={styles.powerupIcon}
-                    size={45}
-                    color={powerUp.color}
-                    name={powerUp.ionIcon}
-                  />
-                  <Text style={styles.title}>{powerUp.title}</Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        )}
-        {toConfirmUse && (
-          <View style={styles.confirmDialogContainer}>
-            // TODO : Design this dialog
-            <View style={styles.confirmDialog}>
+  return (
+    <View
+      style={[
+        styles.parentContainer,
+        toConfirmUse ? { height: windowHeight, zIndex: 999 } : "",
+        isKeyboardVisible
+          ? { transform: [{ scale: 0.6 }], bottom: 0 }
+          : { bottom: 20 },
+      ]}
+    >
+      {!toConfirmUse && (
+        <View style={styles.dialogContainer}>
+          {Object.entries(powerUps).map(([key, powerUp]) => {
+            return (
               <TouchableOpacity
+                disabled={willShowChoices && powerUp.title === "Choices"}
                 onPress={() => {
-                  setToConfirmUse(null);
+                  setToConfirmUse(powerUp);
                 }}
+                style={[
+                  styles.powerContainer,
+                  willShowChoices && powerUp.title === "Choices"
+                    ? { opacity: 0 }
+                    : {},
+                ]}
+                key={key}
               >
-                <Ionicons size={45} color={"#fff"} name={"close"} />
+                <Ionicons
+                  style={styles.powerupIcon}
+                  size={45}
+                  color={powerUp.color}
+                  name={powerUp.ionIcon}
+                />
+                <Text style={styles.title}>{powerUp.title}</Text>
               </TouchableOpacity>
-              <Text style={styles.text}>
-                Power Up Type: {toConfirmUse.title}
-              </Text>
-              <Text style={styles.text}>
-                Description: {toConfirmUse.description}
-              </Text>
-              <Text style={styles.text}>Score Cost: {toConfirmUse.cost}</Text>
-              <Button
-                disabled={score < toConfirmUse.cost}
-                title={
-                  score >= toConfirmUse.cost
-                    ? "Use Power Up"
-                    : "Insuffient Score"
+            );
+          })}
+        </View>
+      )}
+      {toConfirmUse && (
+        <View style={styles.confirmDialogContainer}>
+          {/* TODO : Design this dialog */}
+          <View style={styles.confirmDialog}>
+            <TouchableOpacity
+              onPress={() => {
+                setToConfirmUse(null);
+              }}
+            >
+              <Ionicons size={45} color={"#fff"} name={"close"} />
+            </TouchableOpacity>
+            <Text style={styles.text}>Power Up Type: {toConfirmUse.title}</Text>
+            <Text style={styles.text}>
+              Description: {toConfirmUse.description}
+            </Text>
+            <Text style={styles.text}>Score Cost: {toConfirmUse.cost}</Text>
+            <Button
+              disabled={score < toConfirmUse.cost}
+              title={
+                score >= toConfirmUse.cost ? "Use Power Up" : "Insuffient Score"
+              }
+              color="#e54072"
+              onPress={() => {
+                switch (toConfirmUse.title) {
+                  case "Hint":
+                    powerUpHint();
+                    break;
+                  case "Skip":
+                    powerUpSkip();
+                    break;
+                  case "Choices":
+                    powerUpChoice();
+                    break;
                 }
-                color="#e54072"
-                onPress={() => {
-                  switch (toConfirmUse.title) {
-                    case "Hint":
-                      powerUpHint();
-                      break;
-                    case "Skip":
-                      powerUpSkip();
-                      break;
-                    case "Choices":
-                      powerUpChoice();
-                      break;
-                  }
-                  // TODO: Add sound effect when power is used
-                  setScore(score - toConfirmUse.cost);
-                  setToConfirmUse(null);
-                }}
-              />
-            </View>
+                // TODO: Add sound effect when power is used
+                setScore(score - toConfirmUse.cost);
+                setToConfirmUse(null);
+              }}
+            />
           </View>
-        )}
-      </View>
-    );
-  }
+        </View>
+      )}
+    </View>
+  );
 };
 
 const styles = {
   parentContainer: {
     width: windowWidth,
-    zIndex: 999,
+    zIndex: 700,
     position: "absolute",
-    bottom: 20,
+
     alignSelf: "center",
     backgroundColor: "rgba(255,255,255,0)",
     display: "flex",
