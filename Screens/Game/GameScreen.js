@@ -119,8 +119,6 @@ export default GameScreen = ({ navigation, route }) => {
       firstUpdate.current = false;
       return;
     }
-    setScore(score + 20);
-
     if (remainingQuestion === 0) {
       if (level === maxLevel) setIsAllLevelDialogVisible(true);
       else setIsLevelDialogVisible(true);
@@ -216,6 +214,7 @@ export default GameScreen = ({ navigation, route }) => {
         </VStack>
       </ScrollView>
       <NextLevelDialog
+        operation={operation}
         isVisible={isLevelDialogVisible}
         level={level}
         score={score}
@@ -224,6 +223,7 @@ export default GameScreen = ({ navigation, route }) => {
           navigation.navigate("Home");
         }}
         onPressNextLevel={() => {
+          setScore(score + 100);
           const newLevel = level + 1;
           setLevel(newLevel);
           setIsLevelDialogVisible(false);

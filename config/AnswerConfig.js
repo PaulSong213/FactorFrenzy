@@ -860,7 +860,8 @@ export default AnswerConfig = {
           },
         },
       ],
-      commonDenominator: [
+      commonDenominator: [],
+      simplify: [
         {
           numerator: {
             value: null,
@@ -889,38 +890,6 @@ export default AnswerConfig = {
           denomenator: {
             value: 6,
             isAnswered: false,
-          },
-        },
-      ],
-      simplify: [
-        {
-          numerator: {
-            value: null,
-            isAnswered: true,
-          },
-          denomenator: {
-            value: null,
-            isAnswered: true,
-          },
-        },
-        {
-          numerator: {
-            value: null,
-            isAnswered: true,
-          },
-          denomenator: {
-            value: null,
-            isAnswered: true,
-          },
-        },
-        {
-          numerator: {
-            value: null,
-            isAnswered: true,
-          },
-          denomenator: {
-            value: null,
-            isAnswered: true,
           },
         },
       ],
@@ -1088,38 +1057,7 @@ export default AnswerConfig = {
           },
         },
       ],
-      simplify: [
-        {
-          numerator: {
-            value: null,
-            isAnswered: true,
-          },
-          denomenator: {
-            value: null,
-            isAnswered: true,
-          },
-        },
-        {
-          numerator: {
-            value: null,
-            isAnswered: true,
-          },
-          denomenator: {
-            value: null,
-            isAnswered: true,
-          },
-        },
-        {
-          numerator: {
-            value: null,
-            isAnswered: true,
-          },
-          denomenator: {
-            value: null,
-            isAnswered: true,
-          },
-        },
-      ],
+      simplify: [],
     },
     level4: {
       given: [

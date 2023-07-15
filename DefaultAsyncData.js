@@ -1,11 +1,17 @@
+export const medalColors = {
+  bronze: "#824013",
+  silver: "#8b8b90",
+  gold: "#ca963b",
+};
+
 const medalsStructure = [
   {
     title: "Completing Addition Fraction",
-    type: "gold",
+    color: medalColors.bronze,
   },
   {
     title: "Completing Subtraction Fraction",
-    type: "bronze",
+    type: medalColors.silver,
   },
 ];
 
