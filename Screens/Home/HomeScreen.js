@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { defaultGameData } from "../../DefaultAsyncData";
 import { useIsFocused } from "@react-navigation/native";
+import MedalSection from "./components/MedalSection";
 
 
 
@@ -44,6 +45,7 @@ export default HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
+        <MedalSection isFocused={isFocused} />
         <Text style={styles.title}>Mathematics Games</Text>
 
         <TouchableOpacity style={styles.buttonStyle} onPress={navClickHandler}>

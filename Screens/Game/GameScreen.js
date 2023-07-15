@@ -24,7 +24,7 @@ export default GameScreen = ({ navigation, route }) => {
   const gameData = route.params.gameData;
   const checkpoints = [1, 3, 5, 8];
   const defaultLives = 5;
-  const [score, setScore] = useState(gameData[operation].score + 9999);
+  const [score, setScore] = useState(gameData[operation].score);
   const [lives, setLives] = useState(gameData[operation].lives);
   const [level, setLevel] = useState(gameData[operation].level);
   const [powerUpHintUpdater, setPowerUpHintUpdater] = useState(0);
@@ -119,8 +119,6 @@ export default GameScreen = ({ navigation, route }) => {
       firstUpdate.current = false;
       return;
     }
-    setScore(score + 20);
-
     if (remainingQuestion === 0) {
       if (level === maxLevel) setIsAllLevelDialogVisible(true);
       else setIsLevelDialogVisible(true);
@@ -216,6 +214,7 @@ export default GameScreen = ({ navigation, route }) => {
         </VStack>
       </ScrollView>
       <NextLevelDialog
+        operation={operation}
         isVisible={isLevelDialogVisible}
         level={level}
         score={score}
@@ -224,6 +223,7 @@ export default GameScreen = ({ navigation, route }) => {
           navigation.navigate("Home");
         }}
         onPressNextLevel={() => {
+          setScore(score + 100);
           const newLevel = level + 1;
           setLevel(newLevel);
           setIsLevelDialogVisible(false);

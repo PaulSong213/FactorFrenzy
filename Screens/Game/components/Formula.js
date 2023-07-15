@@ -39,7 +39,7 @@ export default Formula = ({
   }, [currentProblem]);
 
   return (
-    <View style={{ paddingBottom: 50 }}>
+    <View style={{ paddingBottom: 200 }}>
       {/* GIVEN */}
       <HStack m={8} spacing={12}>
         {currentProblem.given.map((value, index) => (
