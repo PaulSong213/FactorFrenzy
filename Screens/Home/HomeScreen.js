@@ -13,9 +13,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { defaultGameData } from "../../DefaultAsyncData";
 import { useIsFocused } from "@react-navigation/native";
 
+
+
 export default HomeScreen = ({ navigation }) => {
   const [gameData, setGameData] = useState(defaultGameData);
   const isFocused = useIsFocused();
+
+  const navClickHandler =() => {
+    navigation.navigate('Lesson');
+  }
+
   const getGameData = async () => {
     try {
       const data = await AsyncStorage.getItem("gameData");
@@ -39,7 +46,7 @@ export default HomeScreen = ({ navigation }) => {
       <ScrollView>
         <Text style={styles.title}>Mathematics Games</Text>
 
-        <TouchableOpacity style={styles.buttonStyle}>
+        <TouchableOpacity style={styles.buttonStyle} onPress={navClickHandler}>
           <View style={{ flexDirection: "row" }}>
             <View>
               <Text
