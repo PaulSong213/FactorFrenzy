@@ -18,6 +18,7 @@ import GameOverDialog from "./components/GameOverDialog";
 import PowerUpsNavigation from "./components/PowerUpsNavigation";
 import ChoicesDialog from "./components/ChoicesDialog";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LevelSelection from "./components/LevelSelection";
 
 export default GameScreen = ({ navigation, route }) => {
   const operation = route.params.operation;
@@ -27,6 +28,7 @@ export default GameScreen = ({ navigation, route }) => {
   const [score, setScore] = useState(gameData[operation].score);
   const [lives, setLives] = useState(gameData[operation].lives);
   const [level, setLevel] = useState(gameData[operation].level);
+  const [isLevelSelectVisible, setIsLevelSelectVisible] = useState(true);
   const [powerUpHintUpdater, setPowerUpHintUpdater] = useState(0);
   const [powerUpSkipUpdater, setPowerUpSkipUpdater] = useState(0);
   const [powerUpChoiceUpdater, setPowerUpChoiceUpdater] = useState(0);
@@ -150,6 +152,7 @@ export default GameScreen = ({ navigation, route }) => {
   useEffect(() => {
     console.log(gameData);
     if (!gameData) return;
+    if (gameData[operation].level > level) return;
     let newGameData = gameData;
     newGameData[operation].lives = lives;
     newGameData[operation].score = score;
@@ -241,6 +244,17 @@ export default GameScreen = ({ navigation, route }) => {
         onPressBackCheckpoint={() => {
           returnToCheckpoint();
         }}
+      />
+      <LevelSelection
+        maxLevel={level}
+        isLevelSelectVisible={isLevelSelectVisible}
+        setIsLevelSelectVisible={setIsLevelSelectVisible}
+        setLevel={setLevel}
+        setCurrentProblem={setCurrentProblem}
+        setRemainingQuestion={setRemainingQuestion}
+        AnswerConfig={AnswerConfig}
+        operation={operation}
+        countIsAnsweredFalse={countIsAnsweredFalse}
       />
       <PowerUpsNavigation
         powerUpHint={() => {
