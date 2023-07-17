@@ -50,21 +50,9 @@ export default GameScreen = ({ navigation, route }) => {
   const windowWidth = Dimensions.get("window").width;
 
   function returnToCheckpoint() {
-    let lowerCheckpoint = checkpoints[0];
-
-    for (let i = 0; i < checkpoints.length; i++) {
-      if (!checkpoints[i + 1]) lowerCheckpoint = checkpoints[i];
-      if (checkpoints[i + 1] > level) {
-        lowerCheckpoint = checkpoints[i];
-        break;
-      }
-    }
-
-    setLevel(lowerCheckpoint);
-    const nextProblem = AnswerConfig[operation][`level${lowerCheckpoint}`];
-    setCurrentProblem(nextProblem);
-    setRemainingQuestion(countIsAnsweredFalse(nextProblem));
+    setLevel(gameData[operation].level);
     setLives(defaultLives);
+    setIsLevelSelectVisible(true);
   }
 
   function countIsAnsweredFalse(obj) {
