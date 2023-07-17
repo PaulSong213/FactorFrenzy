@@ -34,7 +34,7 @@ export default GameScreen = ({ navigation, route }) => {
   const [powerUpChoiceUpdater, setPowerUpChoiceUpdater] = useState(0);
   const [willShowChoices, setWillShowChoices] = useState(false);
   const [answerChoices, setAnswerChoices] = useState([]);
-
+  const [lastRandomLevel, setLastRandomLevel] = useState();
   const [currentProblem, setCurrentProblem] = useState(
     AnswerConfig[operation][`level${level}`]
   );
@@ -48,6 +48,30 @@ export default GameScreen = ({ navigation, route }) => {
   const [isLevelDialogVisible, setIsLevelDialogVisible] = useState(false);
   const [isAllLevelDialogVisible, setIsAllLevelDialogVisible] = useState(false);
   const windowWidth = Dimensions.get("window").width;
+
+  function generateRandomLevel(currentLevel) {
+    const randomLevels = [
+      [1, 2, 3, 4],
+      [5, 6, 7, 8, 9, 10],
+    ];
+    let levelsToSelect = randomLevels[0];
+    for (let i = 0; i < randomLevels.length; i++) {
+      const randomLevel = randomLevels[i];
+      if (randomLevel.includes(currentLevel)) {
+        levelsToSelect = randomLevel;
+      }
+    }
+
+    levelsToSelect.splice(levelsToSelect.indexOf(lastRandomLevel) || 1, 1);
+
+    console.log(levelsToSelect);
+
+    // Select a random level from the available randomLevels
+    const randomLevel =
+      levelsToSelect[Math.floor(Math.random() * levelsToSelect.length)];
+    setLastRandomLevel(randomLevel);
+    return randomLevel;
+  }
 
   function returnToCheckpoint() {
     setLevel(gameData[operation].level);
@@ -216,9 +240,10 @@ export default GameScreen = ({ navigation, route }) => {
         onPressNextLevel={() => {
           setScore(score + 100);
           const newLevel = level + 1;
+          const randomLevel = generateRandomLevel(level);
           setLevel(newLevel);
           setIsLevelDialogVisible(false);
-          const nextProblem = AnswerConfig[operation][`level${newLevel}`];
+          const nextProblem = AnswerConfig[operation][`level${randomLevel}`];
           setCurrentProblem(nextProblem);
           setRemainingQuestion(countIsAnsweredFalse(nextProblem));
           // TODO: Save score, level, and remaining lives in async storage
@@ -234,6 +259,7 @@ export default GameScreen = ({ navigation, route }) => {
         }}
       />
       <LevelSelection
+        generateRandomLevel={generateRandomLevel}
         maxLevel={level}
         isLevelSelectVisible={isLevelSelectVisible}
         setIsLevelSelectVisible={setIsLevelSelectVisible}

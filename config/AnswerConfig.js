@@ -44,7 +44,7 @@ export default AnswerConfig = {
             isAnswered: true,
           },
           denomenator: {
-            value: 5,
+            value: 7,
             isAnswered: true,
           },
         },
@@ -60,47 +60,16 @@ export default AnswerConfig = {
         },
         {
           numerator: {
-            value: null,
-            isAnswered: true,
-          },
-          denomenator: {
-            value: null,
-            isAnswered: true,
-          },
-        },
-      ],
-      commonDenominator: [
-        {
-          numerator: {
-            value: 21,
+            value: 5,
             isAnswered: false,
           },
           denomenator: {
-            value: 35,
-            isAnswered: false,
-          },
-        },
-        {
-          numerator: {
-            value: 10,
-            isAnswered: false,
-          },
-          denomenator: {
-            value: 35,
-            isAnswered: false,
-          },
-        },
-        {
-          numerator: {
-            value: 31,
-            isAnswered: false,
-          },
-          denomenator: {
-            value: 35,
+            value: 7,
             isAnswered: false,
           },
         },
       ],
+      commonDenominator: [],
       simplify: [],
     },
     level3: {
@@ -111,95 +80,33 @@ export default AnswerConfig = {
             isAnswered: true,
           },
           denomenator: {
+            value: 9,
+            isAnswered: true,
+          },
+        },
+        {
+          numerator: {
             value: 3,
             isAnswered: true,
           },
-        },
-        {
-          numerator: {
-            value: 4,
-            isAnswered: true,
-          },
           denomenator: {
-            value: 6,
+            value: 9,
             isAnswered: true,
           },
         },
         {
           numerator: {
-            value: null,
-            isAnswered: true,
-          },
-          denomenator: {
-            value: null,
-            isAnswered: true,
-          },
-        },
-      ],
-      commonDenominator: [
-        {
-          numerator: {
-            value: 4,
+            value: 5,
             isAnswered: false,
           },
           denomenator: {
-            value: 6,
-            isAnswered: false,
-          },
-        },
-        {
-          numerator: {
-            value: 4,
-            isAnswered: false,
-          },
-          denomenator: {
-            value: 6,
-            isAnswered: false,
-          },
-        },
-        {
-          numerator: {
-            value: 8,
-            isAnswered: false,
-          },
-          denomenator: {
-            value: 6,
+            value: 9,
             isAnswered: false,
           },
         },
       ],
-      simplify: [
-        {
-          numerator: {
-            value: null,
-            isAnswered: true,
-          },
-          denomenator: {
-            value: null,
-            isAnswered: true,
-          },
-        },
-        {
-          numerator: {
-            value: null,
-            isAnswered: true,
-          },
-          denomenator: {
-            value: null,
-            isAnswered: true,
-          },
-        },
-        {
-          numerator: {
-            value: 4,
-            isAnswered: false,
-          },
-          denomenator: {
-            value: 3,
-            isAnswered: false,
-          },
-        },
-      ],
+      commonDenominator: [],
+      simplify: [],
     },
     level4: {
       given: [
@@ -215,57 +122,26 @@ export default AnswerConfig = {
         },
         {
           numerator: {
-            value: 14,
+            value: 2,
             isAnswered: true,
           },
           denomenator: {
-            value: 15,
+            value: 10,
             isAnswered: true,
           },
         },
         {
           numerator: {
-            value: null,
-            isAnswered: true,
-          },
-          denomenator: {
-            value: null,
-            isAnswered: true,
-          },
-        },
-      ],
-      commonDenominator: [
-        {
-          numerator: {
-            value: 21,
+            value: 9,
             isAnswered: false,
           },
           denomenator: {
-            value: 30,
-            isAnswered: false,
-          },
-        },
-        {
-          numerator: {
-            value: 28,
-            isAnswered: false,
-          },
-          denomenator: {
-            value: 30,
-            isAnswered: false,
-          },
-        },
-        {
-          numerator: {
-            value: 49,
-            isAnswered: false,
-          },
-          denomenator: {
-            value: 30,
+            value: 10,
             isAnswered: false,
           },
         },
       ],
+      commonDenominator: [],
       simplify: [],
     },
     level5: {

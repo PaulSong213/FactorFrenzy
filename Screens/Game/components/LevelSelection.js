@@ -15,6 +15,7 @@ export default LevelSection = ({
   AnswerConfig,
   operation,
   countIsAnsweredFalse,
+  generateRandomLevel,
 }) => {
   const levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -36,9 +37,11 @@ export default LevelSection = ({
                   isUnlocked={value <= maxLevel}
                   isCheckpoint={value === maxLevel}
                   onPress={() => {
+                    const newLevel = generateRandomLevel(value);
+                    console.log("New Random Level ", newLevel);
                     setLevel(value);
                     const nextProblem =
-                      AnswerConfig[operation][`level${value}`];
+                      AnswerConfig[operation][`level${newLevel}`];
                     setCurrentProblem(nextProblem);
                     setRemainingQuestion(countIsAnsweredFalse(nextProblem));
                     setIsLevelSelectVisible(false);
