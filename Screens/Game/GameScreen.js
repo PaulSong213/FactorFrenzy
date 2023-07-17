@@ -62,9 +62,11 @@ export default GameScreen = ({ navigation, route }) => {
       }
     }
 
-    levelsToSelect.splice(levelsToSelect.indexOf(lastRandomLevel) || 1, 1);
+    if (lastRandomLevel) {
+      levelsToSelect.splice(levelsToSelect.indexOf(lastRandomLevel), 1);
+    }
 
-    console.log(levelsToSelect);
+    console.log(levelsToSelect, "==========");
 
     // Select a random level from the available randomLevels
     const randomLevel =
