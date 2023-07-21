@@ -23,6 +23,9 @@ export default HomeScreen = ({ navigation }) => {
   const navClickHandler =() => {
     navigation.navigate('Lesson');
   }
+  const navClickHandler1 =() => {
+    navigation.navigate('Reference');
+  }
 
   const getGameData = async () => {
     try {
@@ -36,9 +39,12 @@ export default HomeScreen = ({ navigation }) => {
     }
   };
 
+  
+
   useEffect(() => {
     console.log("RERENDER GAME DATA");
-    // TODO: Add background music when game starts
+  
+    
     getGameData();
   }, [isFocused]);
 
@@ -129,6 +135,33 @@ export default HomeScreen = ({ navigation }) => {
             ))}
           </VStack>
         )}
+          <TouchableOpacity style={styles.ReferencebuttonStyle} onPress={navClickHandler1}>
+          <View style={{ flexDirection: "row" }}>
+            <View>
+              <Text
+                style={{
+                  fontSize: 30,
+                  fontWeight: "bold",
+                  marginLeft: 15,
+                  marginTop: 10,
+                  color: "#fff",
+                }}
+              >
+                REFERENCES
+              </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  marginLeft: 15,
+                  marginTop: 1,
+                  color: "#fff",
+                }}
+              >
+                FRACTION
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -153,5 +186,12 @@ const styles = {
     height: 145,
     borderRadius: 10,
     marginBottom: 10,
+  },
+   ReferencebuttonStyle: {
+    backgroundColor: "green",
+    height: 145,
+    borderRadius: 10,
+    marginBottom: 10,
+    marginTop: 12,
   },
 };

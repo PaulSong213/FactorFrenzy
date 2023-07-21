@@ -33,7 +33,7 @@ export const defaultGameData = {
   },
   division: {
     level: 1,
-    score: 0,
+    score: 99999,
     lives: 5,
   },
 };
