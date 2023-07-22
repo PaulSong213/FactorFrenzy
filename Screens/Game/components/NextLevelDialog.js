@@ -45,6 +45,7 @@ export default NextLevelDialog = ({
             oldMedals = JSON.parse(oldMedals);
             newMedalData.push(oldMedals);
           }
+          if (newMedalData.includes(newMedal)) return;
           newMedalData.push(newMedal);
           await AsyncStorage.setItem(
             "gameMedals",
