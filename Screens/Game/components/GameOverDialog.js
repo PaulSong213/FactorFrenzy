@@ -25,7 +25,7 @@ export default GameOverDialog = ({
       <View style={styles.parentContainer}>
         <View style={styles.dialogContainer}>
           <Text style={styles.text}>GAME OVER!</Text>
-          <Button title="Back to Checkpoint" onPress={onPressBackCheckpoint} />
+          <Button title="SELECT LEVEL" onPress={onPressBackCheckpoint} />
         </View>
       </View>
     );

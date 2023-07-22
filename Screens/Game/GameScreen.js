@@ -18,6 +18,7 @@ import GameOverDialog from "./components/GameOverDialog";
 import PowerUpsNavigation from "./components/PowerUpsNavigation";
 import ChoicesDialog from "./components/ChoicesDialog";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LevelSelection from "./components/LevelSelection";
 
 export default GameScreen = ({ navigation, route }) => {
   const operation = route.params.operation;
@@ -27,12 +28,13 @@ export default GameScreen = ({ navigation, route }) => {
   const [score, setScore] = useState(gameData[operation].score);
   const [lives, setLives] = useState(gameData[operation].lives);
   const [level, setLevel] = useState(gameData[operation].level);
+  const [isLevelSelectVisible, setIsLevelSelectVisible] = useState(true);
   const [powerUpHintUpdater, setPowerUpHintUpdater] = useState(0);
   const [powerUpSkipUpdater, setPowerUpSkipUpdater] = useState(0);
   const [powerUpChoiceUpdater, setPowerUpChoiceUpdater] = useState(0);
   const [willShowChoices, setWillShowChoices] = useState(false);
   const [answerChoices, setAnswerChoices] = useState([]);
-
+  const [lastRandomLevel, setLastRandomLevel] = useState();
   const [currentProblem, setCurrentProblem] = useState(
     AnswerConfig[operation][`level${level}`]
   );
@@ -47,22 +49,36 @@ export default GameScreen = ({ navigation, route }) => {
   const [isAllLevelDialogVisible, setIsAllLevelDialogVisible] = useState(false);
   const windowWidth = Dimensions.get("window").width;
 
-  function returnToCheckpoint() {
-    let lowerCheckpoint = checkpoints[0];
-
-    for (let i = 0; i < checkpoints.length; i++) {
-      if (!checkpoints[i + 1]) lowerCheckpoint = checkpoints[i];
-      if (checkpoints[i + 1] > level) {
-        lowerCheckpoint = checkpoints[i];
-        break;
+  function generateRandomLevel(currentLevel) {
+    const randomLevels = [
+      [1, 2, 3, 4],
+      [5, 6, 7, 8, 9, 10],
+    ];
+    let levelsToSelect = randomLevels[0];
+    for (let i = 0; i < randomLevels.length; i++) {
+      const randomLevel = randomLevels[i];
+      if (randomLevel.includes(currentLevel)) {
+        levelsToSelect = randomLevel;
       }
     }
 
-    setLevel(lowerCheckpoint);
-    const nextProblem = AnswerConfig[operation][`level${lowerCheckpoint}`];
-    setCurrentProblem(nextProblem);
-    setRemainingQuestion(countIsAnsweredFalse(nextProblem));
+    if (lastRandomLevel) {
+      levelsToSelect.splice(levelsToSelect.indexOf(lastRandomLevel), 1);
+    }
+
+    console.log(levelsToSelect, "==========");
+
+    // Select a random level from the available randomLevels
+    const randomLevel =
+      levelsToSelect[Math.floor(Math.random() * levelsToSelect.length)];
+    setLastRandomLevel(randomLevel);
+    return randomLevel;
+  }
+
+  function returnToCheckpoint() {
+    setLevel(gameData[operation].level);
     setLives(defaultLives);
+    setIsLevelSelectVisible(true);
   }
 
   function countIsAnsweredFalse(obj) {
@@ -150,6 +166,7 @@ export default GameScreen = ({ navigation, route }) => {
   useEffect(() => {
     console.log(gameData);
     if (!gameData) return;
+    if (gameData[operation].level > level) return;
     let newGameData = gameData;
     newGameData[operation].lives = lives;
     newGameData[operation].score = score;
@@ -225,9 +242,10 @@ export default GameScreen = ({ navigation, route }) => {
         onPressNextLevel={() => {
           setScore(score + 100);
           const newLevel = level + 1;
+          const randomLevel = generateRandomLevel(level);
           setLevel(newLevel);
           setIsLevelDialogVisible(false);
-          const nextProblem = AnswerConfig[operation][`level${newLevel}`];
+          const nextProblem = AnswerConfig[operation][`level${randomLevel}`];
           setCurrentProblem(nextProblem);
           setRemainingQuestion(countIsAnsweredFalse(nextProblem));
           // TODO: Save score, level, and remaining lives in async storage
@@ -241,6 +259,18 @@ export default GameScreen = ({ navigation, route }) => {
         onPressBackCheckpoint={() => {
           returnToCheckpoint();
         }}
+      />
+      <LevelSelection
+        generateRandomLevel={generateRandomLevel}
+        maxLevel={level}
+        isLevelSelectVisible={isLevelSelectVisible}
+        setIsLevelSelectVisible={setIsLevelSelectVisible}
+        setLevel={setLevel}
+        setCurrentProblem={setCurrentProblem}
+        setRemainingQuestion={setRemainingQuestion}
+        AnswerConfig={AnswerConfig}
+        operation={operation}
+        countIsAnsweredFalse={countIsAnsweredFalse}
       />
       <PowerUpsNavigation
         powerUpHint={() => {

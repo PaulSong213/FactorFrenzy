@@ -14,8 +14,6 @@ import { defaultGameData } from "../../DefaultAsyncData";
 import { useIsFocused } from "@react-navigation/native";
 import MedalSection from "./components/MedalSection";
 
-
-
 export default HomeScreen = ({ navigation }) => {
   const [gameData, setGameData] = useState(defaultGameData);
   const isFocused = useIsFocused();
@@ -26,6 +24,7 @@ export default HomeScreen = ({ navigation }) => {
   const navClickHandler1 =() => {
     navigation.navigate('Reference');
   }
+  
 
   const getGameData = async () => {
     try {
